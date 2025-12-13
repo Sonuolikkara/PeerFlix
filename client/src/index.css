@@ -107,6 +107,19 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight font-bold;
   }
+
+  /* Completely hide all scrollbars while preserving scrolling */
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    display: none;
+  }
+  
+  * {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+  }
 }
 
 @layer components {
