@@ -24,7 +24,9 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
   
-  --font-sans: 'Roboto', sans-serif;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'Space Mono', monospace;
   
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
@@ -32,67 +34,67 @@
   --radius-xl: 1rem;
 }
 
-/* LIGHT MODE */
+/* NEO-BRUTALISM THEME */
 :root {
-  --background: 0 0% 100%; /* #ffffff */
-  --foreground: 0 0% 6%; /* #0f0f0f */
+  --background: 45 29% 97%; /* #fbf9f5 - Warm Paper */
+  --foreground: 0 0% 10%; /* #1a1a1a - Soft Black */
   
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 6%;
+  --card-foreground: 0 0% 10%;
   
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 6%;
+  --popover-foreground: 0 0% 10%;
   
-  --primary: 0 0% 6%;
+  --primary: 262 83% 58%; /* #8b5cf6 - Vivid Purple */
   --primary-foreground: 0 0% 100%;
   
-  --secondary: 0 0% 96%; /* #f2f2f2 - slightly darker than f9f9f9 for better contrast */
-  --secondary-foreground: 0 0% 6%;
+  --secondary: 173 80% 40%; /* #14b8a6 - Teal */
+  --secondary-foreground: 0 0% 100%;
   
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 38%; /* #606060 */
+  --muted: 45 20% 90%;
+  --muted-foreground: 0 0% 40%;
   
-  --accent: 0 0% 90%; /* Hover state */
-  --accent-foreground: 0 0% 6%;
+  --accent: 55 90% 60%; /* #fcd34d - Yellow */
+  --accent-foreground: 0 0% 10%;
   
-  --destructive: 0 100% 50%; /* #ff0000 */
+  --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
-  --border: 0 0% 90%;
-  --input: 0 0% 90%;
-  --ring: 0 0% 6%;
+  --border: 0 0% 10%; /* Solid Black Borders */
+  --input: 0 0% 100%;
+  --ring: 262 83% 58%;
   
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 }
 
 .dark {
-  --background: 0 0% 6%; /* #0f0f0f */
-  --foreground: 0 0% 95%; /* #f1f1f1 */
+  --background: 240 10% 4%; /* #09090b */
+  --foreground: 0 0% 98%;
   
-  --card: 0 0% 6%;
-  --card-foreground: 0 0% 95%;
+  --card: 240 10% 10%;
+  --card-foreground: 0 0% 98%;
   
-  --popover: 0 0% 15%; /* #272727 */
-  --popover-foreground: 0 0% 95%;
+  --popover: 240 10% 10%;
+  --popover-foreground: 0 0% 98%;
   
-  --primary: 0 0% 95%;
-  --primary-foreground: 0 0% 6%;
+  --primary: 262 83% 68%;
+  --primary-foreground: 0 0% 10%;
   
-  --secondary: 0 0% 15%; /* #272727 */
-  --secondary-foreground: 0 0% 95%;
+  --secondary: 173 80% 50%;
+  --secondary-foreground: 0 0% 10%;
   
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 67%; /* #aaaaaa */
+  --muted: 240 10% 15%;
+  --muted-foreground: 240 5% 65%;
   
-  --accent: 0 0% 24%; /* Hover state */
-  --accent-foreground: 0 0% 95%;
+  --accent: 55 90% 60%;
+  --accent-foreground: 0 0% 10%;
   
-  --destructive: 0 100% 50%;
-  --destructive-foreground: 0 0% 100%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 98%;
 
-  --border: 0 0% 20%;
-  --input: 0 0% 20%;
-  --ring: 0 0% 95%;
+  --border: 0 0% 80%; /* Light Borders for Dark Mode */
+  --input: 240 10% 15%;
+  --ring: 262 83% 68%;
 }
 
 @layer base {
@@ -102,19 +104,25 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight font-bold;
+  }
+}
+
+@layer components {
+  .neo-box {
+    @apply border-2 border-black dark:border-white rounded-lg bg-card text-card-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all;
+  }
   
-  /* Custom scrollbar for webkit */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  .neo-button {
+    @apply px-4 py-2 font-bold text-sm uppercase tracking-wide border-2 border-black dark:border-white rounded-md bg-accent text-accent-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none hover:bg-accent/80 transition-all;
   }
-  ::-webkit-scrollbar-track {
-    background: transparent;
+
+  .neo-input {
+    @apply w-full h-10 px-3 border-2 border-black dark:border-white rounded-md bg-input focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-neutral-300 dark:bg-neutral-600 rounded-full;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-neutral-400 dark:bg-neutral-500;
+
+  .neo-badge {
+    @apply px-2 py-0.5 text-xs font-bold uppercase border border-black dark:border-white bg-white dark:bg-black rounded-sm shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1px_1px_0px_0px_rgba(255,255,255,1)];
   }
 }

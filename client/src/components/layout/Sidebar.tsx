@@ -1,26 +1,19 @@
-import { Home, Compass, PlaySquare, Clock, ThumbsUp, History, Flame, Music2, Gamepad2, Trophy, Settings, HelpCircle, Flag } from 'lucide-react';
+import { Home, Compass, PlaySquare, Clock, ThumbsUp, History, Flame, Music2, Gamepad2, Trophy, Settings, HelpCircle, Flag, Radio } from 'lucide-react';
 import { useAppStore } from '@/stores/useAppStore';
 import { Link, useLocation } from 'wouter';
 import { cn } from '@/lib/utils';
 import { playlists } from '@/lib/mockData';
 
 const mainLinks = [
-  { icon: Home, label: "Home", href: "/" },
-  { icon: Compass, label: "Shorts", href: "/shorts" },
-  { icon: PlaySquare, label: "Subscriptions", href: "/subscriptions" },
+  { icon: Home, label: "Feed", href: "/" },
+  { icon: Compass, label: "Discover", href: "/shorts" },
+  { icon: Radio, label: "Live", href: "/subscriptions" },
 ];
 
 const libraryLinks = [
-  { icon: History, label: "History", href: "/history" },
-  { icon: Clock, label: "Watch Later", href: "/playlist?list=WL" },
-  { icon: ThumbsUp, label: "Liked Videos", href: "/playlist?list=LL" },
-];
-
-const exploreLinks = [
-  { icon: Flame, label: "Trending", href: "/trending" },
-  { icon: Music2, label: "Music", href: "/channel/music" },
-  { icon: Gamepad2, label: "Gaming", href: "/channel/gaming" },
-  { icon: Trophy, label: "Sports", href: "/channel/sports" },
+  { icon: History, label: "Rewind", href: "/history" },
+  { icon: Clock, label: "Saved", href: "/playlist?list=WL" },
+  { icon: ThumbsUp, label: "Liked", href: "/playlist?list=LL" },
 ];
 
 export function Sidebar() {
@@ -29,10 +22,12 @@ export function Sidebar() {
 
   const SidebarItem = ({ icon: Icon, label, href, isActive }: { icon: any, label: string, href: string, isActive?: boolean }) => (
     <Link href={href} className={cn(
-      "flex items-center gap-5 px-3 py-2 rounded-lg hover:bg-accent transition-colors text-sm font-medium",
-      isActive ? "bg-accent font-semibold" : "text-foreground"
+      "flex items-center gap-4 px-4 py-3 rounded-md border-2 border-transparent transition-all duration-200 group font-display tracking-wide uppercase text-sm",
+      isActive 
+        ? "bg-accent text-accent-foreground border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] font-bold translate-x-[-2px] translate-y-[-2px]" 
+        : "hover:bg-muted hover:border-black/10 dark:hover:border-white/10"
     )}>
-      <Icon size={24} strokeWidth={isActive ? 2.5 : 1.5} />
+      <Icon size={20} strokeWidth={2.5} className={cn(isActive ? "text-black" : "text-muted-foreground group-hover:text-foreground")} />
       <span className="truncate">{label}</span>
     </Link>
   );
@@ -42,16 +37,16 @@ export function Sidebar() {
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 md:hidden" 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden" 
           onClick={toggleSidebar}
         />
       )}
 
       <aside className={cn(
-        "fixed left-0 top-14 bottom-0 w-60 bg-background overflow-y-auto hover:overflow-y-scroll z-50 pb-4 border-r border-border transition-transform duration-300 ease-in-out",
+        "fixed left-0 top-18 bottom-0 w-64 bg-background overflow-y-auto z-40 pb-4 border-r-2 border-black dark:border-white transition-transform duration-300 ease-in-out p-4",
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       )}>
-        <div className="p-3 space-y-1 border-b border-border/50 pb-3">
+        <div className="space-y-2 mb-8">
           {mainLinks.map((link) => (
             <SidebarItem 
               key={link.label} 
@@ -61,36 +56,28 @@ export function Sidebar() {
           ))}
         </div>
 
-        <div className="p-3 space-y-1 border-b border-border/50 pb-3">
-          <h3 className="px-3 py-2 text-base font-bold">You</h3>
+        <div className="space-y-2 mb-8">
+          <h3 className="px-4 text-xs font-black uppercase text-muted-foreground mb-2 tracking-widest">Library</h3>
           {libraryLinks.map((link) => (
             <SidebarItem key={link.label} {...link} isActive={location === link.href} />
           ))}
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="px-4 text-xs font-black uppercase text-muted-foreground mb-2 tracking-widest">Playlists</h3>
           {playlists.map((playlist) => (
-            <Link key={playlist.id} href={`/playlist/${playlist.id}`} className="flex items-center gap-5 px-3 py-2 rounded-lg hover:bg-accent transition-colors text-sm font-medium">
-              <div className="w-6 flex justify-center text-xs text-muted-foreground">PL</div>
-              <span className="truncate">{playlist.name}</span>
+            <Link key={playlist.id} href={`/playlist/${playlist.id}`} className="block px-4 py-2 text-sm font-mono hover:text-primary transition-colors hover:underline decoration-2 underline-offset-4">
+              #{playlist.name}
             </Link>
           ))}
         </div>
 
-        <div className="p-3 space-y-1 border-b border-border/50 pb-3">
-          <h3 className="px-3 py-2 text-base font-bold">Explore</h3>
-          {exploreLinks.map((link) => (
-            <SidebarItem key={link.label} {...link} isActive={location === link.href} />
-          ))}
-        </div>
-
-        <div className="p-3 space-y-1">
-          <SidebarItem icon={Settings} label="Settings" href="/settings" />
-          <SidebarItem icon={Flag} label="Report history" href="/report" />
-          <SidebarItem icon={HelpCircle} label="Help" href="/help" />
-        </div>
-        
-        <div className="px-6 py-4 text-xs text-muted-foreground font-semibold space-y-2">
-          <p>About Press Copyright Contact us Creators Advertise Developers</p>
-          <p>Terms Privacy Policy & Safety How YouTube works Test new features</p>
-          <p className="font-normal text-[10px] mt-2">© 2025 Google LLC</p>
+        <div className="absolute bottom-4 left-4 right-4 p-4 border-2 border-dashed border-black/20 dark:border-white/20 rounded-lg bg-secondary/10">
+          <p className="text-[10px] font-mono text-center opacity-70">
+            STREAM PUNK © 2025
+            <br />
+            NO RIGHTS RESERVED
+          </p>
         </div>
       </aside>
     </>
