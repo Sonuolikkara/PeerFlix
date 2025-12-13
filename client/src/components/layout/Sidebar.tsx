@@ -1,4 +1,4 @@
-import { Home, Compass, PlaySquare, Clock, ThumbsUp, History, Flame, Music2, Gamepad2, Trophy, Settings, HelpCircle, Flag, Radio } from 'lucide-react';
+import { Home, Compass, PlaySquare, Clock, ThumbsUp, History, Flame, Music2, Gamepad2, Trophy, Settings, HelpCircle, Flag, Radio, X } from 'lucide-react';
 import { useAppStore } from '@/stores/useAppStore';
 import { Link, useLocation } from 'wouter';
 import { cn } from '@/lib/utils';
@@ -34,20 +34,27 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile Overlay */}
-      {sidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden" 
-          onClick={toggleSidebar}
-        />
-      )}
+      {/* Overlay Backdrop */}
+      <div 
+        className={cn(
+          "fixed inset-0 bg-black/50 backdrop-blur-sm z-50 transition-opacity duration-300",
+          sidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+        onClick={toggleSidebar}
+      />
 
-      {/* Sidebar - Desktop: Sticky, Mobile: Fixed */}
+      {/* Sidebar - Always a slide-out drawer now */}
       <aside className={cn(
-        "bg-background z-40 pb-4 border-r-2 border-black dark:border-white transition-transform duration-300 ease-in-out p-4 h-[calc(100vh-4.5rem)] overflow-y-auto no-scrollbar",
-        "fixed md:sticky top-[4.5rem] left-0 w-64",
-        sidebarOpen ? "translate-x-0" : "-translate-x-full md:hidden"
+        "fixed left-0 top-0 bottom-0 w-80 bg-background z-[60] p-6 shadow-[10px_0px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_0px_0px_0px_rgba(255,255,255,0.2)] border-r-4 border-black dark:border-white transition-transform duration-300 ease-in-out overflow-y-auto",
+        sidebarOpen ? "translate-x-0" : "-translate-x-full"
       )}>
+        <div className="flex justify-between items-center mb-8">
+           <h2 className="text-2xl font-black uppercase font-display tracking-tighter">Menu</h2>
+           <button onClick={toggleSidebar} className="p-2 hover:bg-accent rounded-md border-2 border-transparent hover:border-black dark:hover:border-white transition-all">
+             <X size={24} />
+           </button>
+        </div>
+
         <div className="space-y-2 mb-8">
           {mainLinks.map((link) => (
             <SidebarItem 

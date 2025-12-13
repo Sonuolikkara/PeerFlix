@@ -16,17 +16,16 @@ interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
-      sidebarOpen: true,
+      sidebarOpen: false, // Default to closed (no dashboard feel)
       toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
       closeSidebar: () => set({ sidebarOpen: false }),
       searchQuery: '',
       setSearchQuery: (query) => set({ searchQuery: query }),
       activeCategory: 'All',
       setActiveCategory: (category) => set({ activeCategory: category }),
-      theme: 'dark', // Default to dark for that cinematic feel
+      theme: 'dark', 
       toggleTheme: () => set((state) => {
         const newTheme = state.theme === 'light' ? 'dark' : 'light';
-        // Side effect to update document class
         if (newTheme === 'dark') {
           document.documentElement.classList.add('dark');
         } else {
@@ -37,7 +36,7 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'yt-clone-storage',
-      partialize: (state) => ({ theme: state.theme }), // Only persist theme
+      partialize: (state) => ({ theme: state.theme }),
     }
   )
 );
