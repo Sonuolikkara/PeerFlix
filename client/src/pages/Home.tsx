@@ -5,7 +5,6 @@ import { useAppStore } from '@/stores/useAppStore';
 import { videos, categories } from '@/lib/mockData';
 import { cn } from '@/lib/utils';
 import { Sparkles } from 'lucide-react';
-
 export default function Home() {
   const { activeCategory, setActiveCategory } = useAppStore();
 
