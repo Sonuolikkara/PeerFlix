@@ -8,6 +8,53 @@ A peer-to-peer video streaming platform built with modern web technologies. Stre
 ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=node.js)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=flat-square&logo=mongodb)
 
+## 🎥 Demo
+
+### Home Page
+The main dashboard with a dark gaming-inspired UI featuring:
+- **Featured Videos** - Hero section showcasing top content
+- **Trending Grid** - Browse all available P2P videos
+- **P2P Status Bar** - Real-time network status and peer count
+- **Category Filters** - Filter videos by type
+
+### Video Player
+Full-featured video player with:
+- Custom controls (play/pause, volume, fullscreen)
+- Progress bar with seek functionality
+- P2P network statistics (peers, download/upload speed)
+- Like, Share, Download buttons
+- Copy Magnet URI for P2P sharing
+
+### Upload System
+Easy drag-and-drop video upload:
+- Supports all major video formats
+- Automatic P2P seeding after upload
+- Progress tracking
+- File size validation (max 500MB)
+
+## 🎯 How to Use
+
+### 1. Browse Videos
+- Open the homepage to see all available videos
+- Click on any video card to see details in the sidebar
+- Use category filters to narrow down content
+
+### 2. Watch a Video
+- Click "Watch Now" on any video
+- The video streams via P2P if available
+- Monitor peer connections in the P2P stats panel
+
+### 3. Upload a Video
+- Click the "Upload" button in the header
+- Drag & drop your video or click to browse
+- Wait for upload and P2P seeding to complete
+- Your video is now available to all peers!
+
+### 4. Share via P2P
+- On the watch page, click "Copy Magnet"
+- Share the magnet URI with anyone
+- They can stream directly from peers without a central server
+
 ## ✨ Features
 
 - **P2P Video Streaming** - Stream videos directly between peers using WebTorrent
