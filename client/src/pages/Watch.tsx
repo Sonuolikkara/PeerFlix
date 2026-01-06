@@ -3,32 +3,110 @@ import ReactPlayer from 'react-player';
 import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { VideoCard } from '@/components/video/VideoCard';
+import { P2PStatusIndicator } from '@/components/video/P2PStatusIndicator';
 import { videos } from '@/lib/mockData';
-import { ThumbsUp, ThumbsDown, Share2, MoreHorizontal, Download, MessageSquare, Heart, Sparkles } from 'lucide-react';
-import { useState } from 'react';
+import { fetchVideoById, fetchVideos, VideoFromAPI, formatFileSize, formatDate } from '@/lib/api';
+import { ThumbsUp, ThumbsDown, Share2, MoreHorizontal, Download, MessageSquare, Heart, Sparkles, Wifi, Copy, Check } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/stores/useAppStore';
+import { useQuery } from '@tanstack/react-query';
+import { Video } from '@/lib/types';
+
+// Transform API video to frontend Video format
+function transformApiVideo(apiVideo: VideoFromAPI): Video {
+  return {
+    id: apiVideo.videoId,
+    title: apiVideo.originalFilename.replace(/\.[^/.]+$/, ''),
+    description: `File size: ${formatFileSize(apiVideo.fileSize)}\n\nThis video is being streamed via P2P (WebTorrent). The more people watch, the faster it loads!`,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80',
+    videoUrl: apiVideo.magnetURI,
+    duration: 'P2P',
+    views: '0',
+    likes: '0',
+    uploadDate: formatDate(apiVideo.uploadedAt),
+    categoryId: 'All',
+    channel: {
+      id: 'p2p',
+      name: 'P2P Upload',
+      avatarUrl: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+      subscribers: '0',
+    },
+  };
+}
 
 export default function Watch() {
   const { id } = useParams();
-  const video = videos.find(v => v.id === id) || videos[0];
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+  const [magnetCopied, setMagnetCopied] = useState(false);
   const { sidebarOpen } = useAppStore();
 
+  // Try to fetch video from API first
+  const { data: apiVideo, isLoading: apiLoading } = useQuery({
+    queryKey: ['video', id],
+    queryFn: () => fetchVideoById(id || ''),
+    enabled: !!id,
+    retry: false,
+  });
+
+  // Fetch all videos for suggestions
+  const { data: apiVideosResponse } = useQuery({
+    queryKey: ['videos'],
+    queryFn: fetchVideos,
+  });
+
+  // Determine video source
+  const isP2PVideo = !!apiVideo?.data;
+  const video = isP2PVideo 
+    ? transformApiVideo(apiVideo.data)
+    : videos.find(v => v.id === id) || videos[0];
+
+  // Get magnet URI for P2P videos
+  const magnetUri = isP2PVideo ? apiVideo.data.magnetURI : null;
+
+  // Copy magnet URI to clipboard
+  const copyMagnetUri = () => {
+    if (magnetUri) {
+      navigator.clipboard.writeText(magnetUri);
+      setMagnetCopied(true);
+      setTimeout(() => setMagnetCopied(false), 2000);
+    }
+  };
+
   // Filter out current video from suggestions
-  const suggestions = videos.filter(v => v.id !== video.id);
-  const displaySuggestions = [...suggestions, ...suggestions];
+  const apiVideos = apiVideosResponse?.data?.map(transformApiVideo) || [];
+  const allVideos = apiVideos.length > 0 ? [...apiVideos, ...videos] : videos;
+  const suggestions = allVideos.filter(v => v.id !== video.id);
+  const displaySuggestions = suggestions.slice(0, 10);
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans flex flex-col">
       <Header />
       <Sidebar />
+      <P2PStatusIndicator />
       
       {/* Simple centered container, no sidebar offset */}
       <main className="flex-1 w-full max-w-[1600px] mx-auto pt-[4.5rem] px-4 md:px-8 pb-12">
         <div className="flex flex-col lg:flex-row gap-8 mt-6">
           {/* Primary Column - Video Player & Info */}
           <div className="flex-1 min-w-0">
+            {/* P2P Badge */}
+            {isP2PVideo && (
+              <div className="mb-4 flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 bg-green-500 text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border-2 border-black">
+                  <Wifi size={14} />
+                  P2P Streaming
+                </div>
+                <button
+                  onClick={copyMagnetUri}
+                  className="inline-flex items-center gap-2 bg-muted px-3 py-1.5 rounded-full text-xs font-mono border-2 border-black/20 hover:border-black dark:border-white/20 dark:hover:border-white transition-colors"
+                >
+                  {magnetCopied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+                  {magnetCopied ? 'Copied!' : 'Copy Magnet'}
+                </button>
+              </div>
+            )}
+
             {/* Player Container - TV Frame Style */}
             <div className="w-full aspect-video bg-black rounded-xl overflow-hidden border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] mb-6 relative z-10">
                {/* @ts-ignore - ReactPlayer types are sometimes tricky */}

@@ -2,8 +2,8 @@ import { Video, Channel, PlaylistItem } from './types';
 
 export const currentUser = {
   name: "Demo User",
-  avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
-  email: "demo@example.com"
+  avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=peerflix&backgroundColor=3b82f6",
+  email: "demo@peerflix.io"
 };
 
 export const categories = [

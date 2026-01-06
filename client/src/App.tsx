@@ -4,16 +4,16 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
-import Home from "@/pages/Home";
-import Watch from "@/pages/Watch";
+import HomeNew from "@/pages/HomeNew";
+import WatchNew from "@/pages/WatchNew";
 import { useEffect } from "react";
 import { useAppStore } from "@/stores/useAppStore";
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/watch/:id" component={Watch} />
+      <Route path="/" component={HomeNew} />
+      <Route path="/watch/:id" component={WatchNew} />
       {/* For demo, channel links redirect to home or 404 for now, can be added later */}
       <Route component={NotFound} />
     </Switch>
