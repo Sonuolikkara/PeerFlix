@@ -353,62 +353,63 @@ export default function WatchNew() {
               </div>
 
               {/* Video Info */}
-              <div className="bg-[#12121f]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-5">
-                <h1 className="text-2xl font-bold text-white mb-3">{video.title}</h1>
+              <div className="bg-[#12121f]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-4 sm:p-5">
+                <h1 className="text-xl sm:text-2xl font-bold text-white mb-3">{video.title}</h1>
                 
-                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-4">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400 mb-4">
                   <span className="flex items-center gap-1">
-                    <Eye size={16} />
+                    <Eye size={14} className="sm:w-4 sm:h-4" />
                     {video.views || 0} views
                   </span>
                   <span className="flex items-center gap-1">
-                    <Clock size={16} />
+                    <Clock size={14} className="sm:w-4 sm:h-4" />
                     {new Date(video.createdAt).toLocaleDateString()}
                   </span>
                   {video.magnetURI && (
                     <span className="flex items-center gap-1 text-green-400">
-                      <Wifi size={16} />
+                      <Wifi size={14} className="sm:w-4 sm:h-4" />
                       P2P Enabled
                     </span>
                   )}
                 </div>
 
-                <p className="text-gray-400 mb-5">
+                <p className="text-gray-400 text-sm sm:text-base mb-5">
                   {video.description || 'High-quality video streaming powered by P2P technology.'}
                 </p>
 
                 {/* Actions */}
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   <button
                     onClick={() => setLiked(!liked)}
                     className={cn(
-                      "flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all",
+                      "flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-medium transition-all",
                       liked
                         ? "bg-pink-500/20 text-pink-400 border border-pink-500/30"
                         : "bg-white/5 text-gray-300 hover:bg-white/10 border border-white/5"
                     )}
                   >
-                    <Heart size={18} className={liked ? "fill-pink-400" : ""} />
-                    {liked ? 'Liked' : 'Like'}
+                    <Heart size={16} className={cn("sm:w-[18px] sm:h-[18px]", liked ? "fill-pink-400" : "")} />
+                    <span className="hidden xs:inline">{liked ? 'Liked' : 'Like'}</span>
                   </button>
 
-                  <button className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-gray-300 rounded-xl font-medium border border-white/5 transition-all">
-                    <Share2 size={18} />
-                    Share
+                  <button className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-white/5 hover:bg-white/10 text-gray-300 rounded-xl text-sm font-medium border border-white/5 transition-all">
+                    <Share2 size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <span className="hidden xs:inline">Share</span>
                   </button>
 
-                  <button className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-gray-300 rounded-xl font-medium border border-white/5 transition-all">
-                    <Download size={18} />
-                    Download
+                  <button className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-white/5 hover:bg-white/10 text-gray-300 rounded-xl text-sm font-medium border border-white/5 transition-all">
+                    <Download size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <span className="hidden xs:inline">Download</span>
                   </button>
 
                   {video.magnetURI && (
                     <button
                       onClick={handleCopyMagnet}
-                      className="flex items-center gap-2 px-4 py-2.5 bg-green-500/10 hover:bg-green-500/20 text-green-400 rounded-xl font-medium border border-green-500/20 transition-all"
+                      className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-green-500/10 hover:bg-green-500/20 text-green-400 rounded-xl text-sm font-medium border border-green-500/20 transition-all"
                     >
-                      {copied ? <Check size={18} /> : <Copy size={18} />}
-                      {copied ? 'Copied!' : 'Copy Magnet'}
+                      {copied ? <Check size={16} className="sm:w-[18px] sm:h-[18px]" /> : <Copy size={16} className="sm:w-[18px] sm:h-[18px]" />}
+                      <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy Magnet'}</span>
+                      <span className="sm:hidden">{copied ? '✓' : 'Magnet'}</span>
                     </button>
                   )}
                 </div>

@@ -97,20 +97,21 @@ export default function HomeNew() {
       <main className="relative pt-20 px-4 lg:px-8 pb-8">
         <div className="max-w-[1800px] mx-auto">
           {/* P2P Status Bar */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
               <div className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium",
+                "flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium",
                 isOnline 
                   ? "bg-green-500/10 border border-green-500/30 text-green-400"
                   : "bg-red-500/10 border border-red-500/30 text-red-400"
               )}>
-                {isOnline ? <Wifi size={16} /> : <WifiOff size={16} />}
-                {isOnline ? 'P2P Network Online' : 'Offline'}
+                {isOnline ? <Wifi size={14} className="sm:w-4 sm:h-4" /> : <WifiOff size={14} className="sm:w-4 sm:h-4" />}
+                <span className="hidden xs:inline">{isOnline ? 'P2P Network Online' : 'Offline'}</span>
+                <span className="xs:hidden">{isOnline ? 'Online' : 'Offline'}</span>
               </div>
               
               {stats && (
-                <div className="flex items-center gap-4 text-sm text-gray-400">
+                <div className="hidden sm:flex items-center gap-4 text-sm text-gray-400">
                   <span className="flex items-center gap-1">
                     <Users size={14} className="text-blue-400" />
                     {stats.activePeers} peers
@@ -122,15 +123,16 @@ export default function HomeNew() {
 
             <button
               onClick={() => setUploadOpen(true)}
-              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 transition-all"
+              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 transition-all"
             >
               <Upload size={18} />
-              Upload Video
+              <span className="hidden md:inline">Upload Video</span>
+              <span className="md:hidden">Upload</span>
             </button>
           </div>
 
           {/* Categories */}
-          <div className="flex items-center gap-3 mb-8 overflow-x-auto pb-2">
+          <div className="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
             {categories.map((cat) => (
               <button
                 key={cat.name}
